@@ -13,6 +13,18 @@ import MyTicketsPage from './pages/MyTicketsPage';
  */
 const OrganizerPanel = lazy(() => import('./pages/OrganizerPanel'));
 
+/**
+ * Lazy-load AdminPanel – only downloaded when /admin route is accessed.
+ */
+const AdminPanel = lazy(() => import('./pages/AdminPanel'));
+
+const Spinner = () => (
+  <div className="loading-state">
+    <div className="spinner" aria-label="Loading…" />
+    <p>Loading…</p>
+  </div>
+);
+
 function App() {
   return (
     <AuthProvider>
@@ -43,20 +55,25 @@ function App() {
               }
             />
 
-            {/* Protected + role-gated + lazy-loaded */}
+            {/* Protected + role-gated + lazy-loaded – organizer */}
             <Route
               path="/organizer"
               element={
                 <ProtectedRoute requiredRole="organizer">
-                  <Suspense
-                    fallback={
-                      <div className="loading-state">
-                        <div className="spinner" aria-label="Loading organizer panel" />
-                        <p>Loading Organizer Panel…</p>
-                      </div>
-                    }
-                  >
+                  <Suspense fallback={<Spinner />}>
                     <OrganizerPanel />
+                  </Suspense>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Protected + role-gated + lazy-loaded – admin */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <Suspense fallback={<Spinner />}>
+                    <AdminPanel />
                   </Suspense>
                 </ProtectedRoute>
               }

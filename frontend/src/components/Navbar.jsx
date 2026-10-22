@@ -13,7 +13,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar__brand">
-        <Link to={token ? '/events' : '/'} className="navbar__logo">
+        <Link to={token ? (role === 'admin' ? '/admin' : '/events') : '/'} className="navbar__logo">
           🎫 EventHub
         </Link>
       </div>
@@ -25,18 +25,29 @@ function Navbar() {
           </li>
         ) : (
           <>
-            <li>
-              <Link to="/events" className="navbar__link">Events</Link>
-            </li>
-            <li>
-              <Link to="/my-tickets" className="navbar__link">My Tickets</Link>
-            </li>
-            {role === 'organizer' && (
+            {/* Admin sees only the Admin Panel link */}
+            {role === 'admin' ? (
               <li>
-                <Link to="/organizer" className="navbar__link navbar__link--special">
-                  Organizer Panel
+                <Link to="/admin" className="navbar__link navbar__link--admin">
+                  🛡️ Admin Panel
                 </Link>
               </li>
+            ) : (
+              <>
+                <li>
+                  <Link to="/events" className="navbar__link">Events</Link>
+                </li>
+                <li>
+                  <Link to="/my-tickets" className="navbar__link">My Tickets</Link>
+                </li>
+                {role === 'organizer' && (
+                  <li>
+                    <Link to="/organizer" className="navbar__link navbar__link--special">
+                      🎪 Organizer Panel
+                    </Link>
+                  </li>
+                )}
+              </>
             )}
           </>
         )}
@@ -44,6 +55,9 @@ function Navbar() {
 
       {token && (
         <div className="navbar__user">
+          {role === 'admin' && (
+            <span className="admin-role-badge">ADMIN</span>
+          )}
           <span className="navbar__username">👤 {attendee?.name}</span>
           <button className="btn btn--outline btn--sm" onClick={handleLogout}>
             Logout

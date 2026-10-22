@@ -96,6 +96,27 @@ router.get('/my', async (req, res, next) => {
 });
 
 /**
+ * GET /api/v1/tickets/all  (admin only)
+ *
+ * Returns ALL tickets across every attendee.
+ * Used by the Admin Panel to show who booked what.
+ */
+router.get('/all', async (req, res, next) => {
+  try {
+    if (req.attendee.role !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Admin access only.' });
+    }
+    const tickets = await Ticket.find()
+      .populate('attendeeId', 'name email phone')
+      .populate('eventId', 'title date venue category')
+      .sort({ bookingDate: -1 });
+    res.status(200).json({ success: true, tickets });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
  * Task 3 – PATCH /api/v1/tickets/:id/status
  *
  * Updates a ticket's status (booked → cancelled | used).

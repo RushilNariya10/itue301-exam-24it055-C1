@@ -27,7 +27,10 @@ function LoginPage() {
 
       const { attendee, token, role } = res.data;
       login(attendee, token, role);
-      navigate('/events');
+      // Route to the correct dashboard based on role
+      if (role === 'admin') navigate('/admin');
+      else if (role === 'organizer') navigate('/organizer');
+      else navigate('/events');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
@@ -83,9 +86,11 @@ function LoginPage() {
           </button>
         </form>
 
-        <p className="auth-card__hint">
-          Demo: <strong>attendee@eventhub.com</strong> / <strong>password123</strong>
-        </p>
+        <div className="auth-card__hint">
+          <p><strong>Attendee:</strong> attendee@eventhub.com / password123</p>
+          <p><strong>Organizer:</strong> organizer@eventhub.com / password123</p>
+          <p><strong>Admin:</strong> admin@eventhub.com / password123</p>
+        </div>
       </div>
     </div>
   );

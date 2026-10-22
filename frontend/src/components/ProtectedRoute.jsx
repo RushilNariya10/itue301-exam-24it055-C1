@@ -4,7 +4,9 @@ import { useAuth } from '../context/AuthContext';
 /**
  * ProtectedRoute guards a route behind authentication AND optionally a role.
  *
- * Failure cases (distinguishable in viva):
+ * requiredRole can be a single string OR an array of strings.
+ *
+ * Failure cases:
  *   - No token  → redirect to /  (login page)
  *   - Wrong role → redirect to /events  (logged in but unauthorised)
  */
@@ -17,8 +19,11 @@ function ProtectedRoute({ children, requiredRole }) {
   }
 
   // Case 2: token exists but role doesn't match → send to events (not logout)
-  if (requiredRole && role !== requiredRole) {
-    return <Navigate to="/events" replace />;
+  if (requiredRole) {
+    const allowed = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+    if (!allowed.includes(role)) {
+      return <Navigate to="/events" replace />;
+    }
   }
 
   return children;
