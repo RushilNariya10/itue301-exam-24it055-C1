@@ -90,5 +90,4 @@ See `.env.example` for required variables.
 
 ## Submission
 
-- GitHub Repo: `itue301-exam-24it055-A`
-- Report PDF: `24IT055_SetF_Report.pdf`
+- GitHub Repo: `itue301-exam-24it055-C1`
