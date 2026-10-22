@@ -1,7 +1,7 @@
 # EventHub Ticket Booking System
 
 ITUE301 · Open-Book Practical Examination · SET F  
-Roll Number: 24IT055 | Batch: A
+Roll Number: 24IT055 | Batch: C1
 
 ---
 
